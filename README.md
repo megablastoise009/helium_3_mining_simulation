@@ -13,7 +13,7 @@ ctest --test-dir build
 ## Run
 
 ```powershell
-buildast_sim_cli.exe --trucks 10 --stations 3 --seed 42 --csv results.csv
+buil vast_sim_cli.exe --trucks 10 --stations 3 --seed 42 --csv results.csv
 ```
 
 ## Output
