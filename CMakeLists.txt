@@ -28,6 +28,7 @@ if (BUILD_TESTING)
         tests/test_station.cpp
         tests/test_event_queue.cpp
         tests/test_simulation.cpp
+        tests/test_sweep.cpp
     )
     target_include_directories(vast_sim_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
