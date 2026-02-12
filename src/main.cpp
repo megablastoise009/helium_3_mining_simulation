@@ -20,22 +20,14 @@ struct CliOptions {
 };
 
 void PrintHelp() {
-    std::cout << "Usage: vast_sim_cli [options]
-"
-              << "Options:
-"
-              << "  --trucks <n>     Number of mining trucks (default 5)
-"
-              << "  --stations <n>   Number of unload stations (default 2)
-"
-              << "  --hours <h>      Simulation hours (default 72)
-"
-              << "  --seed <n>       RNG seed (optional)
-"
-              << "  --csv <path>     Output CSV path (default results.csv)
-"
-              << "  --help           Show this help message
-";
+    std::cout << "Usage: vast_sim_cli [options]\n"
+              << "Options:\n"
+              << "  --trucks <n>     Number of mining trucks (default 5)\n"
+              << "  --stations <n>   Number of unload stations (default 2)\n"
+              << "  --hours <h>      Simulation hours (default 72)\n"
+              << "  --seed <n>       RNG seed (optional)\n"
+              << "  --csv <path>     Output CSV path (default results.csv)\n"
+              << "  --help           Show this help message\n";
 }
 
 bool ParseArgs(int argc, char** argv, CliOptions& options, std::string& error) {
@@ -87,14 +79,12 @@ bool ParseArgs(int argc, char** argv, CliOptions& options, std::string& error) {
 bool WriteCsv(const std::string& path, const sim::SimulationResult& result) {
     std::ofstream out(path);
     if (!out) {
-        std::cerr << "Failed to open CSV path: " << path << "
-";
+        std::cerr << "Failed to open CSV path: " << path << "\n";
         return false;
     }
 
     out << "entity_type,id,loads_started,mining_minutes,travel_minutes,wait_minutes,unload_minutes,efficiency,"
-           "station_busy_minutes,station_utilization,avg_wait_minutes,trucks_started
-";
+           "station_busy_minutes,station_utilization,avg_wait_minutes,trucks_started\n";
 
     out << std::fixed << std::setprecision(2);
     for (std::size_t i = 0; i < result.truck_stats.size(); ++i) {
@@ -105,8 +95,7 @@ bool WriteCsv(const std::string& path, const sim::SimulationResult& result) {
             << stats.travel_minutes << ','
             << stats.wait_minutes << ','
             << stats.unload_minutes << ','
-            << stats.efficiency() << ",,,,
-";
+            << stats.efficiency() << ",,,,\n";
     }
 
     for (std::size_t i = 0; i < result.station_stats.size(); ++i) {
@@ -115,8 +104,7 @@ bool WriteCsv(const std::string& path, const sim::SimulationResult& result) {
             << stats.busy_minutes << ','
             << stats.utilization(result.simulated_minutes) << ','
             << stats.average_wait() << ','
-            << stats.trucks_started << '
-';
+            << stats.trucks_started << '\n';
     }
 
     return true;
@@ -124,20 +112,15 @@ bool WriteCsv(const std::string& path, const sim::SimulationResult& result) {
 
 void PrintSummary(const sim::SimulationResult& result) {
     std::cout << std::fixed << std::setprecision(2);
-    std::cout << "Simulation Summary
-";
+    std::cout << "Simulation Summary\n";
     std::cout << "Trucks: " << result.config.truck_count
               << ", Stations: " << result.config.station_count
               << ", Duration (hours): " << (result.simulated_minutes / sim::kMinutesPerHour)
               << ", Seed: " << (result.config.seed.has_value() ? std::to_string(*result.config.seed) : "n/a")
-              << '
-';
-    std::cout << "Total unloads started: " << result.total_loads_started << "
+              << '\n';
+    std::cout << "Total unloads started: " << result.total_loads_started << "\n\n";
 
-";
-
-    std::cout << "Per-truck stats:
-";
+    std::cout << "Per-truck stats:\n";
     for (std::size_t i = 0; i < result.truck_stats.size(); ++i) {
         const auto& stats = result.truck_stats[i];
         std::cout << "Truck " << i
@@ -147,13 +130,10 @@ void PrintSummary(const sim::SimulationResult& result) {
                   << " | wait: " << stats.wait_minutes
                   << " | unload: " << stats.unload_minutes
                   << " | efficiency: " << stats.efficiency()
-                  << '
-';
+                  << '\n';
     }
 
-    std::cout << "
-Per-station stats:
-";
+    std::cout << "\nPer-station stats:\n";
     for (std::size_t i = 0; i < result.station_stats.size(); ++i) {
         const auto& stats = result.station_stats[i];
         std::cout << "Station " << i
@@ -161,8 +141,7 @@ Per-station stats:
                   << " | busy: " << stats.busy_minutes
                   << " | utilization: " << stats.utilization(result.simulated_minutes)
                   << " | avg wait: " << stats.average_wait()
-                  << '
-';
+                  << '\n';
     }
 }
 
@@ -172,8 +151,7 @@ int main(int argc, char** argv) {
     CliOptions options;
     std::string error;
     if (!ParseArgs(argc, argv, options, error)) {
-        std::cerr << error << '
-';
+        std::cerr << error << '\n';
         PrintHelp();
         return 1;
     }
@@ -184,8 +162,7 @@ int main(int argc, char** argv) {
     }
 
     if (options.trucks <= 0 || options.stations <= 0 || options.hours <= 0.0) {
-        std::cerr << "Trucks, stations, and hours must be positive values.
-";
+        std::cerr << "Trucks, stations, and hours must be positive values.\n";
         return 1;
     }
 
@@ -206,8 +183,6 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::cout << "
-CSV written to: " << options.csv_path << '
-';
+    std::cout << "\nCSV written to: " << options.csv_path << '\n';
     return 0;
 }

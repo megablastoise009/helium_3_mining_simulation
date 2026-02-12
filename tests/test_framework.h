@@ -26,21 +26,17 @@ public:
         for (const auto& test : tests_) {
             try {
                 test.fn();
-                std::cout << "[PASS] " << test.name << '
-';
+                std::cout << "[PASS] " << test.name << '\n';
             } catch (const std::exception& ex) {
                 ++failed;
-                std::cout << "[FAIL] " << test.name << " - " << ex.what() << '
-';
+                std::cout << "[FAIL] " << test.name << " - " << ex.what() << '\n';
             } catch (...) {
                 ++failed;
-                std::cout << "[FAIL] " << test.name << " - unknown error" << '
-';
+                std::cout << "[FAIL] " << test.name << " - unknown error" << '\n';
             }
         }
         if (failed > 0) {
-            std::cout << failed << " test(s) failed." << '
-';
+            std::cout << failed << " test(s) failed." << '\n';
         }
         return failed == 0 ? 0 : 1;
     }
@@ -72,7 +68,8 @@ inline int RunAll() {
 }  // namespace test
 
 #define TEST_CASE(name) TEST_CASE_IMPL(name, __COUNTER__)
-#define TEST_CASE_IMPL(name, id)     static void test_fn_##id();     static bool test_reg_##id = ::test::Register(name, test_fn_##id);     static void test_fn_##id()
+#define TEST_CASE_IMPL(name, id) TEST_CASE_IMPL2(name, id)
+#define TEST_CASE_IMPL2(name, id)     static void test_fn_##id();     static bool test_reg_##id = ::test::Register(name, test_fn_##id);     static void test_fn_##id()
 
 #define REQUIRE(expr)     do {         if (!(expr)) {             ::test::Fail(#expr, __FILE__, __LINE__);         }     } while (0)
 
