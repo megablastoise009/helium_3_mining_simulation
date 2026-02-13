@@ -1,5 +1,7 @@
 # Vast Interview Simulation
 
+![CI](https://github.com/megablastoise009/helium_3_mining_simulation/actions/workflows/ci.yml/badge.svg)
+
 Event-driven simulation for the Vast take-home challenge. The simulation runs 72 hours (configurable) and models mining trucks, travel, unload stations, and queueing behavior.
 
 ## Prereqs
