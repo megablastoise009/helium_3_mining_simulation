@@ -1,6 +1,0 @@
-entity_type,id,loads_started,mining_minutes,travel_minutes,wait_minutes,unload_minutes,efficiency,station_busy_minutes,station_utilization,avg_wait_minutes,trucks_started
-truck,0,18,3150.00,1080.00,0.00,90.00,0.73,,,,
-truck,1,18,3150.00,1080.00,0.00,90.00,0.73,,,,
-truck,2,17,3215.00,1020.00,0.00,85.00,0.74,,,,
-station,0,,,,,,250.00,0.06,0.00,50
-station,1,,,,,,15.00,0.00,0.00,3

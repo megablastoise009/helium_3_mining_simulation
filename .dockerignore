@@ -1,6 +1,9 @@
 build/
 build_*/
+.git/
 .vscode/
+*.png
+*.csv
 *.exe
 *.pdb
 *.obj
@@ -8,6 +11,3 @@ build_*/
 *.log
 *.tmp
 *.cache
-results*.csv
-sweep_*.csv
-sweep_*.png
