@@ -12,3 +12,10 @@ TEST_CASE("TruckStats totals and efficiency") {
     REQUIRE_NEAR(stats.total_minutes(), 135.0, 1e-9);
     REQUIRE_NEAR(stats.efficiency(), 100.0 / 135.0, 1e-9);
 }
+
+// Efficiency should be zero when total time is zero.
+TEST_CASE("TruckStats efficiency is zero with no time") {
+    sim::TruckStats stats;
+    REQUIRE_NEAR(stats.total_minutes(), 0.0, 1e-9);
+    REQUIRE_NEAR(stats.efficiency(), 0.0, 1e-9);
+}
