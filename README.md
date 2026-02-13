@@ -11,6 +11,13 @@ Event-driven simulation for the Vast take-home challenge. The simulation runs 72
 - Ninja (recommended)
 - Python 3 (only for plots)
 
+## Docker
+
+```powershell
+docker build -t vast-sim .
+docker run --rm vast-sim
+```
+
 ## Build
 
 On Windows, run from a Developer Command Prompt so the MSVC toolchain is available.
@@ -30,16 +37,8 @@ ctest --test-dir build --output-on-failure
 
 ## Run
 
-Windows:
-
 ```powershell
 build\vast_sim_cli.exe --trucks 10 --stations 3 --seed 42 --csv results.csv
-```
-
-Linux/macOS:
-
-```bash
-./build/vast_sim_cli --trucks 10 --stations 3 --seed 42 --csv results.csv
 ```
 
 ## Output
@@ -60,11 +59,4 @@ For a max-load sweep that runs trucks from `0..(200 * stations)`:
 ```powershell
 build\vast_sim_sweep_max.exe --stations-max 10 --trucks-multiplier 200 --results build\sweep_max_results.csv --summary build\sweep_max_summary.csv
 python scripts/plot_sweep_max.py --summary build\sweep_max_summary.csv
-```
-
-## Docker
-
-```powershell
-docker build -t vast-sim .
-docker run --rm vast-sim
 ```
