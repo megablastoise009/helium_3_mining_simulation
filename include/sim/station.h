@@ -10,10 +10,12 @@ struct StationStats {
     Minutes total_wait_minutes = 0.0;
     int trucks_started = 0;
 
+    // Busy minutes divided by total simulation minutes.
     double utilization(Minutes sim_minutes) const {
         return sim_minutes > 0.0 ? (busy_minutes / sim_minutes) : 0.0;
     }
 
+    // Average wait time per truck that started unloading.
     double average_wait() const {
         return trucks_started > 0 ? (total_wait_minutes / trucks_started) : 0.0;
     }
@@ -31,13 +33,19 @@ struct UnloadDecision {
 
 class MiningUnloadStation {
 public:
+    // Create a station with a stable id.
     explicit MiningUnloadStation(int id) : id_(id) {}
 
+    // Return the station id.
     int id() const { return id_; }
+    // Return the next time this station is free.
     Minutes next_available_time() const { return next_available_time_; }
+    // Return true if the station is idle at time t.
     bool IsIdleAt(Minutes t) const { return t >= next_available_time_; }
+    // Return aggregate station stats.
     const StationStats& stats() const { return stats_; }
 
+    // Assign a truck arrival to this station and update station stats.
     UnloadDecision AssignTruck(Minutes arrival_time, Minutes simulation_end_minutes) {
         UnloadDecision decision;
         decision.station_id = id_;

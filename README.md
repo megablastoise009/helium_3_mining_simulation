@@ -44,8 +44,7 @@ Linux/macOS:
 
 ## Output
 
-- Command line summary for each truck and station.
-- CSV file with per-truck and per-station metrics.
+Command line summary for each truck and station, plus a CSV with per-truck and per-station metrics.
 
 ## Sweep + Plots
 
@@ -57,8 +56,6 @@ python scripts/plot_sweep.py --summary build/sweep_summary.csv
 ```
 
 ## Docker
-
-Build and run with Docker:
 
 ```powershell
 docker build -t vast-sim .

@@ -17,10 +17,12 @@ struct TestCase {
 
 class Registry {
 public:
+    // Register a test with a name and function.
     void Add(const std::string& name, std::function<void()> fn) {
         tests_.push_back({name, std::move(fn)});
     }
 
+    // Execute all tests and return exit code.
     int RunAll() const {
         int failed = 0;
         for (const auto& test : tests_) {
@@ -45,22 +47,26 @@ private:
     std::vector<TestCase> tests_;
 };
 
+// Return the singleton test registry.
 inline Registry& GetRegistry() {
     static Registry registry;
     return registry;
 }
 
+// Register a test case at static initialization time.
 inline bool Register(const std::string& name, std::function<void()> fn) {
     GetRegistry().Add(name, std::move(fn));
     return true;
 }
 
+// Fail a test with a formatted message.
 inline void Fail(const std::string& expr, const std::string& file, int line) {
     std::ostringstream oss;
     oss << file << ':' << line << " REQUIRE failed: " << expr;
     throw std::runtime_error(oss.str());
 }
 
+// Run all registered tests.
 inline int RunAll() {
     return GetRegistry().RunAll();
 }

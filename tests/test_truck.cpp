@@ -1,6 +1,7 @@
 #include "test_framework.h"
 #include "sim/truck.h"
 
+// Verify total time and efficiency calculations.
 TEST_CASE("TruckStats totals and efficiency") {
     sim::TruckStats stats;
     stats.mining_minutes = 100.0;

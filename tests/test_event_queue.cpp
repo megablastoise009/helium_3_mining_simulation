@@ -1,6 +1,7 @@
 #include "test_framework.h"
 #include "sim/event_queue.h"
 
+// Validate ordering by time then sequence.
 TEST_CASE("EventQueue orders by time then sequence") {
     sim::EventQueue queue;
     queue.Push({10.0, sim::EventType::MineComplete, 0, 2});

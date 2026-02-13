@@ -19,6 +19,7 @@ struct CliOptions {
     bool show_help = false;
 };
 
+// Print CLI usage text.
 void PrintHelp() {
     std::cout << "Usage: vast_sim_cli [options]\n"
               << "Options:\n"
@@ -30,6 +31,7 @@ void PrintHelp() {
               << "  --help           Show this help message\n";
 }
 
+// Parse CLI arguments into options or return an error message.
 bool ParseArgs(int argc, char** argv, CliOptions& options, std::string& error) {
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -76,6 +78,7 @@ bool ParseArgs(int argc, char** argv, CliOptions& options, std::string& error) {
     return true;
 }
 
+// Write per-truck and per-station metrics to a CSV file.
 bool WriteCsv(const std::string& path, const sim::SimulationResult& result) {
     std::ofstream out(path);
     if (!out) {
@@ -110,6 +113,7 @@ bool WriteCsv(const std::string& path, const sim::SimulationResult& result) {
     return true;
 }
 
+// Print a readable summary to stdout.
 void PrintSummary(const sim::SimulationResult& result) {
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "Simulation Summary\n";
@@ -147,6 +151,7 @@ void PrintSummary(const sim::SimulationResult& result) {
 
 }  // namespace
 
+// Entry point for the CLI simulation.
 int main(int argc, char** argv) {
     CliOptions options;
     std::string error;

@@ -17,6 +17,7 @@ struct SweepBest {
     double min_wait_ratio = std::numeric_limits<double>::infinity();
 };
 
+// Clamp a value to the [0, 1] range.
 double Clamp01(double value) {
     if (value < 0.0) return 0.0;
     if (value > 1.0) return 1.0;
@@ -25,6 +26,7 @@ double Clamp01(double value) {
 
 }  // namespace
 
+// Run a parameter sweep and write summary CSVs.
 TEST_CASE("Sweep writes results and summary") {
     const int max_stations = 10;
     const int max_truck_multiplier = 20;

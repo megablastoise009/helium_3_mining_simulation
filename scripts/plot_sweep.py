@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 
 
+# Load sweep summary rows into arrays for plotting.
 def load_summary(path: Path):
     stations = []
     best_trucks_downtime = []
@@ -19,6 +20,7 @@ def load_summary(path: Path):
     return stations, best_trucks_downtime, best_trucks_wait
 
 
+# Render a simple line plot and write it to disk.
 def plot(stations, trucks, out_path: Path, title: str, ylabel: str):
     try:
         import matplotlib.pyplot as plt
@@ -38,6 +40,7 @@ def plot(stations, trucks, out_path: Path, title: str, ylabel: str):
     plt.close()
 
 
+# Parse CLI args and generate both plots.
 def main():
     parser = argparse.ArgumentParser(description="Plot sweep summary results.")
     parser.add_argument(

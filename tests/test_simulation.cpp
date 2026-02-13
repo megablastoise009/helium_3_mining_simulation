@@ -1,6 +1,7 @@
 #include "test_framework.h"
 #include "sim/simulation.h"
 
+// Ensure truck totals cover the full simulation window.
 TEST_CASE("Simulation totals cover full window") {
     sim::SimulationConfig config;
     config.truck_count = 3;

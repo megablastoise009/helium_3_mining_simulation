@@ -5,6 +5,7 @@
 
 namespace sim {
 
+// Initialize the simulation state and RNG.
 Simulation::Simulation(SimulationConfig config) : config_(config) {
     if (config_.truck_count < 0) {
         config_.truck_count = 0;
@@ -30,6 +31,7 @@ Simulation::Simulation(SimulationConfig config) : config_(config) {
     trucks_.resize(static_cast<std::size_t>(config_.truck_count));
 }
 
+// Run the event-driven simulation and return aggregate results.
 SimulationResult Simulation::Run() {
     SimulationResult result;
     result.config = config_;
@@ -80,6 +82,7 @@ SimulationResult Simulation::Run() {
     return result;
 }
 
+// Start a mining phase for a truck and schedule completion.
 void Simulation::StartMining(int truck_id, Minutes start_time) {
     if (start_time >= end_time_) {
         return;
@@ -94,6 +97,7 @@ void Simulation::StartMining(int truck_id, Minutes start_time) {
     }
 }
 
+// Schedule travel from mine site to station.
 void Simulation::ScheduleTravelToStation(int truck_id, Minutes start_time) {
     if (start_time >= end_time_) {
         return;
@@ -107,6 +111,7 @@ void Simulation::ScheduleTravelToStation(int truck_id, Minutes start_time) {
     }
 }
 
+// Schedule travel from station back to the mine site.
 void Simulation::ScheduleTravelToMine(int truck_id, Minutes start_time) {
     if (start_time >= end_time_) {
         return;
@@ -120,6 +125,7 @@ void Simulation::ScheduleTravelToMine(int truck_id, Minutes start_time) {
     }
 }
 
+// Handle a truck arriving at a station and enqueue unload completion.
 void Simulation::HandleArriveStation(int truck_id, Minutes time) {
     const int station_id = SelectStation(time);
     MiningUnloadStation& station = stations_[static_cast<std::size_t>(station_id)];
@@ -141,6 +147,7 @@ void Simulation::HandleArriveStation(int truck_id, Minutes time) {
     }
 }
 
+// Choose a station based on earliest availability (first idle else shortest wait).
 int Simulation::SelectStation(Minutes arrival_time) const {
     int first_idle = -1;
     for (std::size_t i = 0; i < stations_.size(); ++i) {
@@ -167,6 +174,7 @@ int Simulation::SelectStation(Minutes arrival_time) const {
     return best;
 }
 
+// Sample a mining duration in minutes.
 Minutes Simulation::SampleMiningMinutes() {
     return mining_dist_(rng_);
 }
