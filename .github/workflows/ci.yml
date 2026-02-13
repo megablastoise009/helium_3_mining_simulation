@@ -31,3 +31,50 @@ jobs:
 
       - name: Docker build
         run: docker build -t vast-sim .
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run unit tests
+        run: ./build/vast_sim_tests
+
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run integrated simulation
+        run: ./build/vast_sim_cli --trucks 10 --stations 2 --seed 42 --csv results.csv
+
+      - name: Show results
+        run: |
+          echo "---- results.csv ----"
+          cat results.csv
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-results
+          path: results.csv
