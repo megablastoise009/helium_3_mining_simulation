@@ -12,15 +12,10 @@ struct TruckStats {
     int loads_started = 0;
 
     // Total minutes spent across all activities.
-    Minutes total_minutes() const {
-        return mining_minutes + travel_minutes + wait_minutes + unload_minutes;
-    }
+    Minutes total_minutes() const;
 
     // Ratio of mining time to total time.
-    double efficiency() const {
-        const Minutes total = total_minutes();
-        return total > 0.0 ? (mining_minutes / total) : 0.0;
-    }
+    double efficiency() const;
 };
 
 }  // namespace sim

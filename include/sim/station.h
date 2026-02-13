@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include "sim/constants.h"
 
 namespace sim {
@@ -11,14 +10,10 @@ struct StationStats {
     int trucks_started = 0;
 
     // Busy minutes divided by total simulation minutes.
-    double utilization(Minutes sim_minutes) const {
-        return sim_minutes > 0.0 ? (busy_minutes / sim_minutes) : 0.0;
-    }
+    double utilization(Minutes sim_minutes) const;
 
     // Average wait time per truck that started unloading.
-    double average_wait() const {
-        return trucks_started > 0 ? (total_wait_minutes / trucks_started) : 0.0;
-    }
+    double average_wait() const;
 };
 
 struct UnloadDecision {
@@ -34,37 +29,19 @@ struct UnloadDecision {
 class MiningUnloadStation {
 public:
     // Create a station with a stable id.
-    explicit MiningUnloadStation(int id) : id_(id) {}
+    explicit MiningUnloadStation(int id);
 
     // Return the station id.
-    int id() const { return id_; }
+    int id() const;
     // Return the next time this station is free.
-    Minutes next_available_time() const { return next_available_time_; }
+    Minutes next_available_time() const;
     // Return true if the station is idle at time t.
-    bool IsIdleAt(Minutes t) const { return t >= next_available_time_; }
+    bool IsIdleAt(Minutes t) const;
     // Return aggregate station stats.
-    const StationStats& stats() const { return stats_; }
+    const StationStats& stats() const;
 
     // Assign a truck arrival to this station and update station stats.
-    UnloadDecision AssignTruck(Minutes arrival_time, Minutes simulation_end_minutes) {
-        UnloadDecision decision;
-        decision.station_id = id_;
-        decision.unload_start = std::max(arrival_time, next_available_time_);
-        decision.wait_minutes = std::max(0.0, std::min(decision.unload_start, simulation_end_minutes) - arrival_time);
-        decision.starts_before_end = decision.unload_start < simulation_end_minutes;
-        decision.unload_end = decision.unload_start + kUnloadMinutes;
-        decision.completes_before_end = decision.unload_end <= simulation_end_minutes;
-        if (decision.starts_before_end) {
-            decision.actual_unload_minutes = std::min(kUnloadMinutes, simulation_end_minutes - decision.unload_start);
-            stats_.busy_minutes += decision.actual_unload_minutes;
-            stats_.total_wait_minutes += (decision.unload_start - arrival_time);
-            stats_.trucks_started += 1;
-        } else {
-            decision.actual_unload_minutes = 0.0;
-        }
-        next_available_time_ = decision.unload_end;
-        return decision;
-    }
+    UnloadDecision AssignTruck(Minutes arrival_time, Minutes simulation_end_minutes);
 
 private:
     int id_ = 0;

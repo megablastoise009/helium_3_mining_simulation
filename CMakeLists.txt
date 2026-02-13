@@ -9,6 +9,9 @@ option(BUILD_TESTING "Build tests" ON)
 
 add_library(vast_sim
     src/simulation.cpp
+    src/event_queue.cpp
+    src/station.cpp
+    src/truck.cpp
 )
 
 target_include_directories(vast_sim PUBLIC
