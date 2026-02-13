@@ -27,7 +27,7 @@ double Clamp01(double value) {
 }  // namespace
 
 // Run a parameter sweep and write summary CSVs.
-TEST_CASE("Sweep writes results and summary") {
+void TestSweepWritesResultsAndSummary() {
     const int max_stations = 10;
     const int max_truck_multiplier = 20;
     const sim::Minutes sim_minutes = sim::kSimulationMinutesDefault;

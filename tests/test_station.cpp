@@ -2,7 +2,7 @@
 #include "sim/station.h"
 
 // Idle station should start unloading immediately.
-TEST_CASE("Station assigns without wait when idle") {
+void TestStationAssignsWithoutWaitWhenIdle() {
     sim::MiningUnloadStation station(0);
     sim::UnloadDecision decision = station.AssignTruck(0.0, 100.0);
 
@@ -14,7 +14,7 @@ TEST_CASE("Station assigns without wait when idle") {
 }
 
 // Busy station should queue and add wait time.
-TEST_CASE("Station queues when busy") {
+void TestStationQueuesWhenBusy() {
     sim::MiningUnloadStation station(0);
     station.AssignTruck(0.0, 100.0);
     sim::UnloadDecision decision = station.AssignTruck(0.0, 100.0);
@@ -25,7 +25,7 @@ TEST_CASE("Station queues when busy") {
 }
 
 // Unload should truncate if the simulation ends mid-unload.
-TEST_CASE("Station unload partially when simulation ends") {
+void TestStationUnloadPartiallyWhenSimulationEnds() {
     sim::MiningUnloadStation station(0);
     sim::UnloadDecision decision = station.AssignTruck(8.0, 10.0);
 
@@ -35,7 +35,7 @@ TEST_CASE("Station unload partially when simulation ends") {
 }
 
 // If arrival is after simulation end, stats should not change.
-TEST_CASE("Station ignores arrivals after simulation end") {
+void TestStationIgnoresArrivalsAfterSimulationEnd() {
     sim::MiningUnloadStation station(0);
     sim::UnloadDecision decision = station.AssignTruck(10.0, 5.0);
 
@@ -46,7 +46,7 @@ TEST_CASE("Station ignores arrivals after simulation end") {
 }
 
 // If unload ends exactly at simulation end, it should count fully.
-TEST_CASE("Station unload ends exactly at simulation end") {
+void TestStationUnloadEndsAtSimulationEnd() {
     sim::MiningUnloadStation station(0);
     sim::UnloadDecision decision = station.AssignTruck(5.0, 10.0);
 

@@ -2,7 +2,7 @@
 #include "sim/event_queue.h"
 
 // Validate ordering by time then sequence.
-TEST_CASE("EventQueue orders by time then sequence") {
+void TestEventQueueOrdersByTimeThenSequence() {
     sim::EventQueue queue;
     queue.Push({10.0, sim::EventType::MineComplete, 0, 2});
     queue.Push({5.0, sim::EventType::MineComplete, 0, 3});
@@ -21,7 +21,7 @@ TEST_CASE("EventQueue orders by time then sequence") {
 }
 
 // Empty should reflect whether events remain in the queue.
-TEST_CASE("EventQueue empty reflects state") {
+void TestEventQueueEmptyReflectsState() {
     sim::EventQueue queue;
     REQUIRE(queue.Empty());
     queue.Push({1.0, sim::EventType::MineComplete, 0, 0});

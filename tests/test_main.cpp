@@ -1,6 +1,6 @@
-#include "test_framework.h"
+#include "test_cases.h"
 
 // Entry point for the test runner.
 int main() {
-    return test::RunAll();
+    return test::RunAll(AllTests());
 }

@@ -2,7 +2,7 @@
 #include "sim/truck.h"
 
 // Verify total time and efficiency calculations.
-TEST_CASE("TruckStats totals and efficiency") {
+void TestTruckStatsTotalsAndEfficiency() {
     sim::TruckStats stats;
     stats.mining_minutes = 100.0;
     stats.travel_minutes = 20.0;
@@ -14,7 +14,7 @@ TEST_CASE("TruckStats totals and efficiency") {
 }
 
 // Efficiency should be zero when total time is zero.
-TEST_CASE("TruckStats efficiency is zero with no time") {
+void TestTruckStatsEfficiencyZero() {
     sim::TruckStats stats;
     REQUIRE_NEAR(stats.total_minutes(), 0.0, 1e-9);
     REQUIRE_NEAR(stats.efficiency(), 0.0, 1e-9);

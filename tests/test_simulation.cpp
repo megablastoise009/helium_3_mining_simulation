@@ -2,7 +2,7 @@
 #include "sim/simulation.h"
 
 // Ensure truck totals cover the full simulation window.
-TEST_CASE("Simulation totals cover full window") {
+void TestSimulationTotalsCoverFullWindow() {
     sim::SimulationConfig config;
     config.truck_count = 3;
     config.station_count = 1;
@@ -24,7 +24,7 @@ TEST_CASE("Simulation totals cover full window") {
 }
 
 // Zero trucks or stations should yield empty or zeroed stats.
-TEST_CASE("Simulation handles zero trucks or stations") {
+void TestSimulationHandlesZeroTrucksOrStations() {
     sim::SimulationConfig no_trucks;
     no_trucks.truck_count = 0;
     no_trucks.station_count = 2;
@@ -51,7 +51,7 @@ TEST_CASE("Simulation handles zero trucks or stations") {
 }
 
 // Very short simulations should not record unloads.
-TEST_CASE("Simulation with short duration produces no unloads") {
+void TestSimulationShortDurationProducesNoUnloads() {
     sim::SimulationConfig config;
     config.truck_count = 1;
     config.station_count = 1;
@@ -66,7 +66,7 @@ TEST_CASE("Simulation with short duration produces no unloads") {
 }
 
 // Aggregate station busy time should match total unload time.
-TEST_CASE("Simulation unload minutes match station busy minutes") {
+void TestSimulationUnloadMinutesMatchStationBusyMinutes() {
     sim::SimulationConfig config;
     config.truck_count = 5;
     config.station_count = 2;
@@ -90,7 +90,7 @@ TEST_CASE("Simulation unload minutes match station busy minutes") {
 }
 
 // Total loads started should match the sum across trucks.
-TEST_CASE("Simulation total loads matches per-truck loads") {
+void TestSimulationTotalLoadsMatchPerTruckLoads() {
     sim::SimulationConfig config;
     config.truck_count = 4;
     config.station_count = 2;
