@@ -78,3 +78,42 @@ jobs:
         with:
           name: simulation-results
           path: results.csv
+
+  sweep-plot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build python3 python3-pip
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run sweep
+        run: ./build/vast_sim_sweep_max --stations-max 10 --trucks-multiplier 200 --results sweep_max_results.csv --summary sweep_max_summary.csv
+
+      - name: Install plotting deps
+        run: python3 -m pip install --no-cache-dir matplotlib
+
+      - name: Plot results
+        run: python3 scripts/plot_sweep_max.py --summary sweep_max_summary.csv
+
+      - name: Show summary
+        run: |
+          echo "---- sweep_max_summary.csv ----"
+          cat sweep_max_summary.csv
+
+      - name: Upload sweep artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sweep-max-results
+          path: |
+            sweep_max_results.csv
+            sweep_max_summary.csv
+            sweep_max_trucks.png
+            sweep_max_loads.png

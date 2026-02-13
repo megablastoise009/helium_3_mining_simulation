@@ -20,6 +20,11 @@ add_executable(vast_sim_cli
 )
 target_link_libraries(vast_sim_cli PRIVATE vast_sim)
 
+add_executable(vast_sim_sweep_max
+    src/sweep_max.cpp
+)
+target_link_libraries(vast_sim_sweep_max PRIVATE vast_sim)
+
 if (BUILD_TESTING)
     enable_testing()
     add_executable(vast_sim_tests

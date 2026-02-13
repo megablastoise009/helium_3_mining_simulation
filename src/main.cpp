@@ -166,8 +166,8 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    if (options.trucks <= 0 || options.stations <= 0 || options.hours <= 0.0) {
-        std::cerr << "Trucks, stations, and hours must be positive values.\n";
+    if (options.trucks < 0 || options.stations <= 0 || options.hours <= 0.0) {
+        std::cerr << "Trucks must be >= 0; stations and hours must be positive values.\n";
         return 1;
     }
 

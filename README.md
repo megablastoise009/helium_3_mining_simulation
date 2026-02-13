@@ -55,6 +55,13 @@ and writes `sweep_results.csv` + `sweep_summary.csv` in the build directory. To 
 python scripts/plot_sweep.py --summary build/sweep_summary.csv
 ```
 
+For a max-load sweep that runs trucks from `0..(200 * stations)`:
+
+```powershell
+build\vast_sim_sweep_max.exe --stations-max 10 --trucks-multiplier 200 --results build\sweep_max_results.csv --summary build\sweep_max_summary.csv
+python scripts/plot_sweep_max.py --summary build\sweep_max_summary.csv
+```
+
 ## Docker
 
 ```powershell
