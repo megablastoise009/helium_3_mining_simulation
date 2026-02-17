@@ -8,6 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
 option(BUILD_TESTING "Build tests" ON)
+option(USE_SYSTEM_GTEST "Use a system-installed GoogleTest" OFF)
+set(GTEST_SOURCE_DIR "" CACHE PATH "Path to a local GoogleTest source checkout")
 
 add_library(vast_sim
     src/simulation.cpp
@@ -31,13 +33,24 @@ add_executable(vast_sim_sweep_max
 target_link_libraries(vast_sim_sweep_max PRIVATE vast_sim)
 
 if (BUILD_TESTING)
-    include(FetchContent)
-    FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
-    )
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
+    if (USE_SYSTEM_GTEST)
+        find_package(GTest REQUIRED)
+    else()
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+        if (GTEST_SOURCE_DIR)
+            add_subdirectory(${GTEST_SOURCE_DIR} ${CMAKE_BINARY_DIR}/_deps/googletest-build)
+        elseif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/googletest/CMakeLists.txt)
+            add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/googletest
+                ${CMAKE_BINARY_DIR}/_deps/googletest-build)
+        else()
+            include(FetchContent)
+            FetchContent_Declare(
+                googletest
+                URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+            )
+            FetchContent_MakeAvailable(googletest)
+        endif()
+    endif()
 
     enable_testing()
     add_executable(vast_sim_tests

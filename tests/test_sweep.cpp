@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <filesystem>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <limits>
@@ -34,8 +36,16 @@ TEST(SweepTest, WritesResultsAndSummary) {
     const sim::Minutes sim_minutes = sim::kSimulationMinutesDefault;
     const double eps = 1e-9;
 
-    std::ofstream results("sweep_results.csv");
-    std::ofstream summary("sweep_summary.csv");
+    const auto suffix = std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
+    const std::filesystem::path temp_dir = std::filesystem::temp_directory_path() / ("vast_sim_sweep_" + suffix);
+    std::error_code ec;
+    std::filesystem::create_directories(temp_dir, ec);
+    ASSERT_FALSE(ec);
+
+    const std::filesystem::path results_path = temp_dir / "sweep_results.csv";
+    const std::filesystem::path summary_path = temp_dir / "sweep_summary.csv";
+    std::ofstream results(results_path);
+    std::ofstream summary(summary_path);
     ASSERT_TRUE(results.good());
     ASSERT_TRUE(summary.good());
 
@@ -106,4 +116,6 @@ TEST(SweepTest, WritesResultsAndSummary) {
         EXPECT_GE(best.trucks_for_min_downtime, 1);
         EXPECT_GE(best.trucks_for_min_wait, 1);
     }
+
+    std::filesystem::remove_all(temp_dir, ec);
 }

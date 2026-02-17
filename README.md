@@ -35,7 +35,10 @@ If you don't have Ninja, omit `-G Ninja`.
 ctest --test-dir build --output-on-failure
 ```
 
-Tests use GoogleTest, fetched via CMake `FetchContent` on first configure (network required once).
+Tests use GoogleTest and a vendored copy is included under `third_party/googletest`
+so builds work offline. If you remove the vendored copy, you can either install a system
+GTest and pass `-DUSE_SYSTEM_GTEST=ON`, or point CMake at a local checkout with
+`-DGTEST_SOURCE_DIR=...`.
 
 ## Run
 
