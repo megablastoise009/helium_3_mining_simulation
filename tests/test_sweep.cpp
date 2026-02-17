@@ -1,4 +1,5 @@
-#include "test_framework.h"
+// Sweep helper tests.
+#include <gtest/gtest.h>
 
 #include <cmath>
 #include <fstream>
@@ -27,7 +28,7 @@ double Clamp01(double value) {
 }  // namespace
 
 // Run a parameter sweep and write summary CSVs.
-void TestSweepWritesResultsAndSummary() {
+TEST(SweepTest, WritesResultsAndSummary) {
     const int max_stations = 10;
     const int max_truck_multiplier = 20;
     const sim::Minutes sim_minutes = sim::kSimulationMinutesDefault;
@@ -35,8 +36,8 @@ void TestSweepWritesResultsAndSummary() {
 
     std::ofstream results("sweep_results.csv");
     std::ofstream summary("sweep_summary.csv");
-    REQUIRE(results.good());
-    REQUIRE(summary.good());
+    ASSERT_TRUE(results.good());
+    ASSERT_TRUE(summary.good());
 
     results << "stations,trucks,station_utilization,station_downtime,truck_wait_ratio,total_loads\n";
     summary << "stations,best_trucks_min_downtime,min_downtime,best_trucks_min_wait,truck_wait_ratio\n";
@@ -73,10 +74,10 @@ void TestSweepWritesResultsAndSummary() {
             const double denom_truck = result.simulated_minutes * trucks;
             const double truck_wait_ratio = denom_truck > 0.0 ? (total_truck_wait / denom_truck) : 0.0;
 
-            REQUIRE(station_utilization >= -eps);
-            REQUIRE(station_utilization <= 1.0 + eps);
-            REQUIRE(truck_wait_ratio >= -eps);
-            REQUIRE(truck_wait_ratio <= 1.0 + eps);
+            EXPECT_GE(station_utilization, -eps);
+            EXPECT_LE(station_utilization, 1.0 + eps);
+            EXPECT_GE(truck_wait_ratio, -eps);
+            EXPECT_LE(truck_wait_ratio, 1.0 + eps);
 
             results << stations << ','
                     << trucks << ','
@@ -102,7 +103,7 @@ void TestSweepWritesResultsAndSummary() {
                 << best.trucks_for_min_wait << ','
                 << best.min_wait_ratio << '\n';
 
-        REQUIRE(best.trucks_for_min_downtime >= 1);
-        REQUIRE(best.trucks_for_min_wait >= 1);
+        EXPECT_GE(best.trucks_for_min_downtime, 1);
+        EXPECT_GE(best.trucks_for_min_wait, 1);
     }
 }

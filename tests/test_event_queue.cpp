@@ -1,31 +1,32 @@
-#include "test_framework.h"
+// Event queue unit tests.
+#include <gtest/gtest.h>
 #include "sim/event_queue.h"
 
 // Validate ordering by time then sequence.
-void TestEventQueueOrdersByTimeThenSequence() {
+TEST(EventQueueTest, OrdersByTimeThenSequence) {
     sim::EventQueue queue;
     queue.Push({10.0, sim::EventType::MineComplete, 0, 2});
     queue.Push({5.0, sim::EventType::MineComplete, 0, 3});
     queue.Push({10.0, sim::EventType::MineComplete, 0, 1});
 
     sim::Event first = queue.Pop();
-    REQUIRE_NEAR(first.time, 5.0, 1e-9);
+    EXPECT_NEAR(first.time, 5.0, 1e-9);
 
     sim::Event second = queue.Pop();
-    REQUIRE_NEAR(second.time, 10.0, 1e-9);
-    REQUIRE(second.sequence == 1);
+    EXPECT_NEAR(second.time, 10.0, 1e-9);
+    EXPECT_EQ(second.sequence, 1u);
 
     sim::Event third = queue.Pop();
-    REQUIRE_NEAR(third.time, 10.0, 1e-9);
-    REQUIRE(third.sequence == 2);
+    EXPECT_NEAR(third.time, 10.0, 1e-9);
+    EXPECT_EQ(third.sequence, 2u);
 }
 
 // Empty should reflect whether events remain in the queue.
-void TestEventQueueEmptyReflectsState() {
+TEST(EventQueueTest, EmptyReflectsState) {
     sim::EventQueue queue;
-    REQUIRE(queue.Empty());
+    EXPECT_TRUE(queue.Empty());
     queue.Push({1.0, sim::EventType::MineComplete, 0, 0});
-    REQUIRE(!queue.Empty());
+    EXPECT_FALSE(queue.Empty());
     queue.Pop();
-    REQUIRE(queue.Empty());
+    EXPECT_TRUE(queue.Empty());
 }

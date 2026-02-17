@@ -1,3 +1,4 @@
+// Truck-level statistics.
 #pragma once
 
 #include "sim/constants.h"

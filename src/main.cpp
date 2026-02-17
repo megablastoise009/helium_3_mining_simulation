@@ -1,3 +1,4 @@
+// CLI entry point and CSV output.
 #include <cmath>
 #include <fstream>
 #include <iomanip>

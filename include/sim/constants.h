@@ -1,3 +1,4 @@
+// Simulation time constants and units.
 #pragma once
 
 namespace sim {

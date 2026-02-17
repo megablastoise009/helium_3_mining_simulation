@@ -1,3 +1,4 @@
+// Event queue implementation.
 #include "sim/event_queue.h"
 
 namespace sim {
@@ -22,8 +23,10 @@ Event EventQueue::Pop() {
 // Order by earliest time, then lowest sequence.
 bool EventQueue::Compare::operator()(const Event& a, const Event& b) const {
     if (a.time != b.time) {
+        // earlier times have higher priority
         return a.time > b.time;
     }
+    // for tie breaks - for deterministic requirement
     return a.sequence > b.sequence;
 }
 

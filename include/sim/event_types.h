@@ -1,3 +1,4 @@
+// Event types and payload for the simulation queue.
 #pragma once
 
 #include <cstddef>

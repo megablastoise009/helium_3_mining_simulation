@@ -1,3 +1,4 @@
+// Unload station model and station-level statistics.
 #pragma once
 
 #include "sim/constants.h"
@@ -6,7 +7,7 @@ namespace sim {
 
 struct StationStats {
     Minutes busy_minutes = 0.0;
-    Minutes total_wait_minutes = 0.0;
+    Minutes total_time_trucks_waited_at_station = 0.0;
     int trucks_started = 0;
 
     // Busy minutes divided by total simulation minutes.
@@ -33,10 +34,13 @@ public:
 
     // Return the station id.
     int id() const;
+
     // Return the next time this station is free.
     Minutes next_available_time() const;
+
     // Return true if the station is idle at time t.
     bool IsIdleAt(Minutes t) const;
+
     // Return aggregate station stats.
     const StationStats& stats() const;
 

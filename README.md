@@ -35,6 +35,8 @@ If you don't have Ninja, omit `-G Ninja`.
 ctest --test-dir build --output-on-failure
 ```
 
+Tests use GoogleTest, fetched via CMake `FetchContent` on first configure (network required once).
+
 ## Run
 
 ```powershell
@@ -44,6 +46,20 @@ build\vast_sim_cli.exe --trucks 10 --stations 3 --seed 42 --csv results.csv
 ## Output
 
 Command line summary for each truck and station, plus a CSV with per-truck and per-station metrics.
+
+## Design Notes
+
+- Event-driven simulation using a time-ordered priority queue.
+- Station selection: first idle station, otherwise the shortest wait.
+- Mining duration is uniform in the 1–5 hour range; a seed makes runs reproducible.
+
+## Example Output
+
+```
+Simulation Summary
+Trucks: 3, Stations: 2, Duration (hours): 72.00, Seed: 42
+Total unloads started: 53
+```
 
 ## Sweep + Plots
 

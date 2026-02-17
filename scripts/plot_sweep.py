@@ -1,3 +1,4 @@
+# Plotting utilities for the base sweep output.
 import argparse
 import csv
 from pathlib import Path

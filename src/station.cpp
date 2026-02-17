@@ -1,3 +1,4 @@
+// Unload station implementation.
 #include "sim/station.h"
 
 #include <algorithm>
@@ -11,7 +12,7 @@ double StationStats::utilization(Minutes sim_minutes) const {
 
 // Average wait time per truck that started unloading.
 double StationStats::average_wait() const {
-    return trucks_started > 0 ? (total_wait_minutes / trucks_started) : 0.0;
+    return trucks_started > 0 ? (total_time_trucks_waited_at_station / trucks_started) : 0.0;
 }
 
 // Create a station with a stable id.
@@ -41,19 +42,31 @@ const StationStats& MiningUnloadStation::stats() const {
 UnloadDecision MiningUnloadStation::AssignTruck(Minutes arrival_time, Minutes simulation_end_minutes) {
     UnloadDecision decision;
     decision.station_id = id_;
+    // the uload will begin when the truck arrives, and the station becomes available
     decision.unload_start = std::max(arrival_time, next_available_time_);
     decision.wait_minutes = std::max(0.0, std::min(decision.unload_start, simulation_end_minutes) - arrival_time);
     decision.starts_before_end = decision.unload_start < simulation_end_minutes;
     decision.unload_end = decision.unload_start + kUnloadMinutes;
     decision.completes_before_end = decision.unload_end <= simulation_end_minutes;
-    if (decision.starts_before_end) {
+
+    // Update station stats to account for tuck unloading
+    if (decision.starts_before_end)
+    {
+        // Either standard unload time, or cut short?
         decision.actual_unload_minutes = std::min(kUnloadMinutes, simulation_end_minutes - decision.unload_start);
+
         stats_.busy_minutes += decision.actual_unload_minutes;
-        stats_.total_wait_minutes += (decision.unload_start - arrival_time);
+        
+        // Keep track of how long trucks waited at this station
+        stats_.total_time_trucks_waited_at_station += (decision.unload_start - arrival_time);
         stats_.trucks_started += 1;
-    } else {
+    }
+    
+    else
+    {
         decision.actual_unload_minutes = 0.0;
     }
+
     next_available_time_ = decision.unload_end;
     return decision;
 }

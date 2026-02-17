@@ -1,18 +1,21 @@
+// Priority queue for simulation events.
 #pragma once
 
 #include <queue>
 #include <vector>
-#include "sim/event.h"
+#include "sim/event_types.h"
 
 namespace sim {
 
 class EventQueue {
 public:
-    // Add an event to the queue.
+    /// @brief Add an event to the queue.
     void Push(const Event& ev);
-    // Return true if no events remain.
+
+    /// @brief Return true if no events remain.
     bool Empty() const;
-    // Remove and return the next event by time/sequence.
+
+    /// @brief Remove and return the next event by time/sequence.
     Event Pop();
 
 private:

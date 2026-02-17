@@ -1,3 +1,4 @@
+// Sweep the simulation to find trucks needed for max loads per station count.
 #include <fstream>
 #include <iomanip>
 #include <iostream>

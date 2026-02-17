@@ -1,3 +1,4 @@
+# CI pipeline for build, tests, docker, and sweeps.
 name: ci
 
 on:

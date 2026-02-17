@@ -1,3 +1,4 @@
+// Truck stats implementation.
 #include "sim/truck.h"
 
 namespace sim {

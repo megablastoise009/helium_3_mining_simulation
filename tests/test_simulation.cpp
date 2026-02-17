@@ -1,8 +1,9 @@
-#include "test_framework.h"
+// Simulation unit tests.
+#include <gtest/gtest.h>
 #include "sim/simulation.h"
 
 // Ensure truck totals cover the full simulation window.
-void TestSimulationTotalsCoverFullWindow() {
+TEST(SimulationTest, TotalsCoverFullWindow) {
     sim::SimulationConfig config;
     config.truck_count = 3;
     config.station_count = 1;
@@ -13,18 +14,18 @@ void TestSimulationTotalsCoverFullWindow() {
     sim::SimulationResult result = simulation.Run();
 
     for (const auto& stats : result.truck_stats) {
-        REQUIRE_NEAR(stats.total_minutes(), config.simulation_minutes, 1e-6);
+        EXPECT_NEAR(stats.total_minutes(), config.simulation_minutes, 1e-6);
     }
 
     for (const auto& stats : result.station_stats) {
-        REQUIRE(stats.busy_minutes >= 0.0);
-        REQUIRE(stats.busy_minutes <= config.simulation_minutes + 1e-6);
-        REQUIRE(stats.utilization(config.simulation_minutes) <= 1.0 + 1e-6);
+        EXPECT_GE(stats.busy_minutes, 0.0);
+        EXPECT_LE(stats.busy_minutes, config.simulation_minutes + 1e-6);
+        EXPECT_LE(stats.utilization(config.simulation_minutes), 1.0 + 1e-6);
     }
 }
 
 // Zero trucks or stations should yield empty or zeroed stats.
-void TestSimulationHandlesZeroTrucksOrStations() {
+TEST(SimulationTest, HandlesZeroTrucksOrStations) {
     sim::SimulationConfig no_trucks;
     no_trucks.truck_count = 0;
     no_trucks.station_count = 2;
@@ -33,9 +34,9 @@ void TestSimulationHandlesZeroTrucksOrStations() {
 
     sim::Simulation sim_no_trucks(no_trucks);
     sim::SimulationResult res_no_trucks = sim_no_trucks.Run();
-    REQUIRE(res_no_trucks.truck_stats.empty());
-    REQUIRE(res_no_trucks.station_stats.size() == 2);
-    REQUIRE(res_no_trucks.total_loads_started == 0);
+    EXPECT_TRUE(res_no_trucks.truck_stats.empty());
+    EXPECT_EQ(res_no_trucks.station_stats.size(), 2u);
+    EXPECT_EQ(res_no_trucks.total_loads_started, 0);
 
     sim::SimulationConfig no_stations;
     no_stations.truck_count = 2;
@@ -45,13 +46,13 @@ void TestSimulationHandlesZeroTrucksOrStations() {
 
     sim::Simulation sim_no_stations(no_stations);
     sim::SimulationResult res_no_stations = sim_no_stations.Run();
-    REQUIRE(res_no_stations.truck_stats.size() == 2);
-    REQUIRE(res_no_stations.station_stats.empty());
-    REQUIRE(res_no_stations.total_loads_started == 0);
+    EXPECT_EQ(res_no_stations.truck_stats.size(), 2u);
+    EXPECT_TRUE(res_no_stations.station_stats.empty());
+    EXPECT_EQ(res_no_stations.total_loads_started, 0);
 }
 
 // Very short simulations should not record unloads.
-void TestSimulationShortDurationProducesNoUnloads() {
+TEST(SimulationTest, ShortDurationProducesNoUnloads) {
     sim::SimulationConfig config;
     config.truck_count = 1;
     config.station_count = 1;
@@ -61,12 +62,12 @@ void TestSimulationShortDurationProducesNoUnloads() {
     sim::Simulation simulation(config);
     sim::SimulationResult result = simulation.Run();
 
-    REQUIRE(result.total_loads_started == 0);
-    REQUIRE_NEAR(result.station_stats[0].busy_minutes, 0.0, 1e-9);
+    EXPECT_EQ(result.total_loads_started, 0);
+    EXPECT_NEAR(result.station_stats[0].busy_minutes, 0.0, 1e-9);
 }
 
 // Aggregate station busy time should match total unload time.
-void TestSimulationUnloadMinutesMatchStationBusyMinutes() {
+TEST(SimulationTest, UnloadMinutesMatchStationBusyMinutes) {
     sim::SimulationConfig config;
     config.truck_count = 5;
     config.station_count = 2;
@@ -86,11 +87,11 @@ void TestSimulationUnloadMinutesMatchStationBusyMinutes() {
         total_station_busy += stats.busy_minutes;
     }
 
-    REQUIRE_NEAR(total_truck_unload, total_station_busy, 1e-6);
+    EXPECT_NEAR(total_truck_unload, total_station_busy, 1e-6);
 }
 
 // Total loads started should match the sum across trucks.
-void TestSimulationTotalLoadsMatchPerTruckLoads() {
+TEST(SimulationTest, TotalLoadsMatchPerTruckLoads) {
     sim::SimulationConfig config;
     config.truck_count = 4;
     config.station_count = 2;
@@ -105,5 +106,5 @@ void TestSimulationTotalLoadsMatchPerTruckLoads() {
         total += stats.loads_started;
     }
 
-    REQUIRE(total == result.total_loads_started);
+    EXPECT_EQ(total, result.total_loads_started);
 }
