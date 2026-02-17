@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Docker build
-        run: docker build -t vast-sim .
+        run: docker build -t helium_3_mining-sim .
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
         run: cmake --build build
 
       - name: Run unit tests
-        run: ./build/vast_sim_tests
+        run: ./build/helium_3_mining_sim_tests
 
   integration-test:
     runs-on: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
         run: cmake --build build
 
       - name: Run integrated simulation
-        run: ./build/vast_sim_cli --trucks 10 --stations 2 --seed 42 --csv results.csv
+        run: ./build/helium_3_mining_sim_cli --trucks 10 --stations 2 --seed 42 --csv results.csv
 
       - name: Show results
         run: |
@@ -96,7 +96,7 @@ jobs:
         run: cmake --build build
 
       - name: Run sweep
-        run: ./build/vast_sim_sweep_max --stations-max 10 --trucks-multiplier 200 --results sweep_max_results.csv --summary sweep_max_summary.csv
+        run: ./build/helium_3_mining_sim_sweep_max --stations-max 10 --trucks-multiplier 200 --results sweep_max_results.csv --summary sweep_max_summary.csv
 
       - name: Install plotting deps
         run: python3 -m pip install --no-cache-dir matplotlib

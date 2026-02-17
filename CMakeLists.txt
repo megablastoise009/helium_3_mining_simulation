@@ -1,6 +1,6 @@
 # CMake build configuration for the simulation.
 cmake_minimum_required(VERSION 3.20)
-project(vast_interview LANGUAGES CXX)
+project(helium_3_mining_simulation LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,26 +11,26 @@ option(BUILD_TESTING "Build tests" ON)
 option(USE_SYSTEM_GTEST "Use a system-installed GoogleTest" OFF)
 set(GTEST_SOURCE_DIR "" CACHE PATH "Path to a local GoogleTest source checkout")
 
-add_library(vast_sim
+add_library(helium_3_mining_sim
     src/simulation.cpp
     src/event_queue.cpp
     src/station.cpp
     src/truck.cpp
 )
 
-target_include_directories(vast_sim PUBLIC
+target_include_directories(helium_3_mining_sim PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-add_executable(vast_sim_cli
+add_executable(helium_3_mining_sim_cli
     src/main.cpp
 )
-target_link_libraries(vast_sim_cli PRIVATE vast_sim)
+target_link_libraries(helium_3_mining_sim_cli PRIVATE helium_3_mining_sim)
 
-add_executable(vast_sim_sweep_max
+add_executable(helium_3_mining_sim_sweep_max
     src/sweep_max.cpp
 )
-target_link_libraries(vast_sim_sweep_max PRIVATE vast_sim)
+target_link_libraries(helium_3_mining_sim_sweep_max PRIVATE helium_3_mining_sim)
 
 if (BUILD_TESTING)
     if (USE_SYSTEM_GTEST)
@@ -53,18 +53,18 @@ if (BUILD_TESTING)
     endif()
 
     enable_testing()
-    add_executable(vast_sim_tests
+    add_executable(helium_3_mining_sim_tests
         tests/test_truck.cpp
         tests/test_station.cpp
         tests/test_event_queue.cpp
         tests/test_simulation.cpp
         tests/test_sweep.cpp
     )
-    target_include_directories(vast_sim_tests PRIVATE
+    target_include_directories(helium_3_mining_sim_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
-    target_link_libraries(vast_sim_tests PRIVATE vast_sim GTest::gtest_main)
+    target_link_libraries(helium_3_mining_sim_tests PRIVATE helium_3_mining_sim GTest::gtest_main)
 
     include(GoogleTest)
-    gtest_discover_tests(vast_sim_tests)
+    gtest_discover_tests(helium_3_mining_sim_tests)
 endif()

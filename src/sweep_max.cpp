@@ -72,7 +72,7 @@ bool ParseArgs(int argc, char** argv, SweepOptions& options, std::string& error)
 
 // Print CLI usage details.
 void PrintHelp() {
-    std::cout << "Usage: vast_sim_sweep_max [options]\n"
+    std::cout << "Usage: helium_3_mining_sim_sweep_max [options]\n"
               << "Options:\n"
               << "  --stations-max <n>       Maximum station count (default 10)\n"
               << "  --trucks-multiplier <n>  Max trucks per station (default 200)\n"

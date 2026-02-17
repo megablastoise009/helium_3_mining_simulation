@@ -22,7 +22,7 @@ struct CliOptions {
 
 // Print CLI usage text.
 void PrintHelp() {
-    std::cout << "Usage: vast_sim_cli [options]\n"
+    std::cout << "Usage: helium_3_mining_sim_cli [options]\n"
               << "Options:\n"
               << "  --trucks <n>     Number of mining trucks (default 5)\n"
               << "  --stations <n>   Number of unload stations (default 2)\n"

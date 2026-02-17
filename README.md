@@ -1,8 +1,8 @@
-# Vast Interview Simulation
+# helium_3_mining Simulation
 
 ![CI](https://github.com/megablastoise009/helium_3_mining_simulation/actions/workflows/ci.yml/badge.svg)
 
-Event-driven simulation for the Vast take-home challenge. The simulation runs 72 hours (configurable) and models mining trucks, travel, unload stations, and queueing behavior.
+Event-driven simulation for the helium_3_mining take-home challenge. The simulation runs 72 hours (configurable) and models mining trucks, travel, unload stations, and queueing behavior.
 
 ## Prereqs
 
@@ -14,8 +14,8 @@ Event-driven simulation for the Vast take-home challenge. The simulation runs 72
 ## Docker
 
 ```powershell
-docker build -t vast-sim .
-docker run --rm vast-sim
+docker build -t helium_3_mining-sim .
+docker run --rm helium_3_mining-sim
 ```
 
 ## Build
@@ -43,7 +43,7 @@ GTest and pass `-DUSE_SYSTEM_GTEST=ON`, or point CMake at a local checkout with
 ## Run
 
 ```powershell
-build\vast_sim_cli.exe --trucks 10 --stations 3 --seed 42 --csv results.csv
+build\helium_3_mining_sim_cli.exe --trucks 10 --stations 3 --seed 42 --csv results.csv
 ```
 
 ## Output
@@ -52,7 +52,7 @@ Command line summary for each truck and station, plus a CSV with per-truck and p
 
 ## Design Notes
 
-- Event-driven simulation using a time-ordered priority queue.
+- Event-driven simulation using a time ordered priority queue.
 - Station selection: first idle station, otherwise the shortest wait.
 - Mining duration is uniform in the 1–5 hour range; a seed makes runs reproducible.
 
@@ -76,6 +76,6 @@ python scripts/plot_sweep.py --summary build/sweep_summary.csv
 For a max-load sweep that runs trucks from `0..(200 * stations)`:
 
 ```powershell
-build\vast_sim_sweep_max.exe --stations-max 10 --trucks-multiplier 200 --results build\sweep_max_results.csv --summary build\sweep_max_summary.csv
+build\helium_3_mining_sim_sweep_max.exe --stations-max 10 --trucks-multiplier 200 --results build\sweep_max_results.csv --summary build\sweep_max_summary.csv
 python scripts/plot_sweep_max.py --summary build\sweep_max_summary.csv
 ```

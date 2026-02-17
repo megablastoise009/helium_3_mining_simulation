@@ -19,4 +19,4 @@ RUN ctest --test-dir build --output-on-failure
 # Optional: plotting support
 RUN pip3 install --no-cache-dir matplotlib
 
-CMD ["./build/vast_sim_cli", "--trucks", "10", "--stations", "3", "--seed", "42", "--csv", "results.csv"]
+CMD ["./build/helium_3_mining_sim_cli", "--trucks", "10", "--stations", "3", "--seed", "42", "--csv", "results.csv"]

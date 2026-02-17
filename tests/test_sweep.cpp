@@ -37,7 +37,7 @@ TEST(SweepTest, WritesResultsAndSummary) {
     const double eps = 1e-9;
 
     const auto suffix = std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
-    const std::filesystem::path temp_dir = std::filesystem::temp_directory_path() / ("vast_sim_sweep_" + suffix);
+    const std::filesystem::path temp_dir = std::filesystem::temp_directory_path() / ("helium_3_mining_sim_sweep_" + suffix);
     std::error_code ec;
     std::filesystem::create_directories(temp_dir, ec);
     ASSERT_FALSE(ec);
